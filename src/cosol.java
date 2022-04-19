@@ -33,6 +33,12 @@ public class cosol {
 		return num;
 	}
 	
+	public static Integer ctrlPop() {
+		int num = CtrlStck.get(CtrlStck.size() - 1);
+		CtrlStck.remove(CtrlStck.size() - 1);
+		return num;
+	}
+	
 	public static String strPop() {
 		try {
 			String str = StrStck.get(StrStck.size() - 1);
@@ -115,6 +121,17 @@ public class cosol {
 					int y = mathPop();
 					int x = mathPop();
 					MathStck.add(x / y);
+				}
+			}
+			// Comparisons
+			if (!fillStr && !fillMath) {
+				// Conditional jump function
+				if (instructionChar[i] == '\'') {
+					int num = ctrlPop();
+					if (num != 0) {
+						i = MathStck.get(MathStck.size() - 1) - 1; // Reset the for Loop to the desired position -> since i would instantly increase, we subtract one right away, so we get the correct value.
+						continue;
+					}
 				}
 			}
 			// Standard Operations
@@ -220,5 +237,6 @@ public class cosol {
 		}
 		System.out.println(StrStck);
 		System.out.println(MathStck);
+		System.out.println(CtrlStck);
 	}
 }
