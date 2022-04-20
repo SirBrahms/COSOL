@@ -160,7 +160,7 @@ public class cosol {
 			// Pops the first to Values of the MathStack, 
 			// Does the specified operation, e.g: SecondValue - FirstValue
 			// The Second Value popped is always the first value in the operation!
-			if (!fillStr && !fillMath && MathStck.size() >= 2) {
+			if (!fillStr && !fillMath && MathStck.size() >= 2 && !fillLbl) {
 				if (instructionChar[i] == '+') {
 					int y = mathPop();
 					int x = mathPop();
@@ -186,7 +186,7 @@ public class cosol {
 			
 			// Comparisons
 			// (for filling the Control Stack: Branching will be in the standard operations)
-			if (!fillStr && !fillMath && fillCond) {
+			if (!fillStr && !fillMath && fillCond && !fillLbl) {
 				if (instructionChar[i] == '=') {
 					int x = mathPop();
 					int y = mathPop();
@@ -235,7 +235,7 @@ public class cosol {
 			
 			
 			// Standard Operations
-			if (!fillStr && !fillMath && !fillCond) {
+			if (!fillStr && !fillMath && !fillCond && !fillLbl) {
 				// Print Function
 				if (instructionChar[i] == '.') {
 					System.out.println(strPop());
