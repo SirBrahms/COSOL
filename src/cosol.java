@@ -331,7 +331,7 @@ public class cosol {
 				if (instructionChar[i] == '_') {
 					try {
 						Scanner sc = new Scanner(System.in);
-						String str = sc.next();
+						String str = sc.nextLine();
 						StrStck.add(str);
 					}
 					catch (Exception ex) {
