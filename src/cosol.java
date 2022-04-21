@@ -1,4 +1,6 @@
 import java.util.*;
+import java.io.File;
+import java.io.FileNotFoundException;
 @SuppressWarnings("resource")
 
 public class cosol {
@@ -12,17 +14,35 @@ public class cosol {
 	public static Integer StckIndex = 0; // Integer for marking which Stack should be addressed: 0 = strStck, 1 = mathStck
 	
 	public static void main(String[] args) {
-		try {
-			while (true) {
+		if (args.length == 0) {
+			try {
 				Scanner sc = new Scanner(System.in);
-				System.out.print("> ");
-				String instruction = sc.nextLine();
-				interpret(instruction);
+				while (true) {
+					System.out.print("> ");
+					String instruction = sc.nextLine();
+					interpret(instruction);
+				}
+			}
+			catch (Exception ex){
+				System.out.println(">?");
+				System.exit(0);
 			}
 		}
-		catch (Exception ex){
-			System.out.println(">?");
-			System.exit(0);
+		else {
+			// Read file supplied in args[1]
+			String fullString = "";
+			try {
+				File fileToRead = new File(args[0]);
+				Scanner reader = new Scanner(fileToRead);
+				while (reader.hasNextLine()) {
+					fullString += reader.nextLine();
+				}
+				fullString.replace("/n", "");
+			} catch (Exception ex) {
+				System.out.println("File not found!");
+				System.exit(1);
+			}
+			interpret(fullString);
 		}
 	}
 	
@@ -34,9 +54,16 @@ public class cosol {
 	}
 	
 	public static Integer ctrlPop() {
-		int num = CtrlStck.get(CtrlStck.size() - 1);
-		CtrlStck.remove(CtrlStck.size() - 1);
-		return num;
+		try {
+			int num = CtrlStck.get(CtrlStck.size() - 1);
+			CtrlStck.remove(CtrlStck.size() - 1);
+			return num;
+		}
+		catch (Exception ex) {
+			System.out.println("ctrl?");
+			System.exit(0);
+		}
+		return null;
 	}
 	
 	public static String strPop() {
@@ -72,10 +99,6 @@ public class cosol {
 		
 		// Actually interpreting the instruction
 		for (int i = 0; i < instructionChar.length; i++) {
-			// Ignore Whitespace
-			if (instructionChar[i] == ' ') {
-				continue;
-			}
 			
 			// String Collection
 			if (fillStr && instructionChar[i] != '"') {
@@ -158,6 +181,11 @@ public class cosol {
 					interpret(fullLoop);
 				}
 				fullLoop = "";
+			}
+			
+			// Ignore Whitespace
+			if (instructionChar[i] == ' ') {
+				continue;
 			}
 			
 			
@@ -405,7 +433,7 @@ public class cosol {
 				}
 				// Conditional Goto Function
 				if (instructionChar[i] == '!') {
-					if (CtrlStck.get(CtrlStck.size() - 1) == 1) {
+					if (ctrlPop() == 1) {
 						try {
 							i = mathPop() - 1; // Reset the for Loop to the desired position -> since i would instantly increase, we subtract one right away, so we get the correct value.
 							continue;
