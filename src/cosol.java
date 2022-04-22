@@ -426,6 +426,7 @@ public class cosol {
 					}
 					else {
 						System.out.println("|?");
+						System.exit(0);
 					}
 				}
 				// Stack Index set Function
@@ -447,6 +448,10 @@ public class cosol {
 						int duplicate = mathPop();
 						MathStck.add(duplicate);
 						MathStck.add(duplicate);
+					}
+					else {
+						System.out.println("|?");
+						System.exit(0);
 					}
 				}
 				// Program Quit Function
@@ -539,10 +544,10 @@ public class cosol {
 				}
 			}
 		}
-		System.out.println(StrStck);
+		//System.out.println(StrStck);
 		//System.out.println(MathStck);
 		//System.out.println(CtrlStck);
-		System.out.println(_Labels);
+		//System.out.println(_Labels);
 		//System.out.println(StckIndex);
 	}
 }
