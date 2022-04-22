@@ -537,7 +537,7 @@ public class cosol {
 						continue;
 					}
 					catch (Exception ex) {
-						System.out.println("¨?");
+						System.out.println("!?");
 						System.exit(0);
 						break;
 					}
