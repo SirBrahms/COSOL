@@ -46,6 +46,77 @@ public class cosol {
 		}
 	}
 	
+	public static void loadHeaderFile(String location) {
+		String fullString = "";
+		try {
+			File fileToOpen = new File(location);
+			Scanner reader = new Scanner(fileToOpen);
+			while (reader.hasNextLine()) {
+				fullString += reader.nextLine();
+			}
+			fullString.replace("\n", "");
+		}
+		catch (Exception ex) {
+			System.out.println("Header File not found");
+			System.exit(1);
+		}
+		finally {
+			// Collect labels from Header File
+			String fullLbl = ""; // String for Collecting Labels
+			String fullStr = ""; // String for collecting Strings
+			boolean fillStr = false; // Boolean for marking when to collect Strings
+			boolean fillLbl = false; // Boolean for marking when to collect Labels
+			List<String> _InternalStrStck = new ArrayList<>();
+			char[] instructionChars = fullString.toCharArray(); // char Array for instructions
+			
+			for (int i = 0; i < instructionChars.length; i++) {
+				
+				// String Collection
+				if (fillStr && instructionChars[i] != '"') {
+					fullStr += instructionChars[i];
+				}
+				if (instructionChars[i] == '"' && !fillStr) {
+					fillStr = true;
+				}
+				else if (instructionChars[i] == '"' && fillStr) {
+					fillStr = false;
+					_InternalStrStck.add(fullStr);
+					fullStr = "";
+				}
+				
+				// Collect Labels
+				if (fillLbl && instructionChars[i] != '{' && instructionChars[i] != '}') {
+					fullLbl += instructionChars[i];
+				}
+				if (instructionChars[i] == '{' && !fillLbl) {
+					fillLbl = true;
+				}
+				else if (instructionChars[i] == '}' && fillLbl) {
+					fillLbl = false;
+					if (_NextLabelname != "") {
+						_Labels.put(_NextLabelname, fullLbl);
+						fullLbl = "";
+						_NextLabelname = "";
+					}
+					else {
+						System.out.println("\"?\":{}");
+						System.exit(0);
+						break;
+					}
+					
+				}
+				
+				if (!fillLbl && !fillStr) {
+					if (instructionChars[i] == ':') {
+						_NextLabelname = _InternalStrStck.get(_InternalStrStck.size() - 1);
+						_InternalStrStck.remove(_InternalStrStck.size() - 1);
+					}
+				}
+			}
+		}
+		
+	}
+	
 	public static Integer mathPop() {
 		int num = MathStck.get(MathStck.size() - 1);
 		LastMathPop = num;
@@ -145,6 +216,8 @@ public class cosol {
 				fillCond = false;
 				fullCond = "";
 			}
+			
+			
 			// Label Collection
 			if (fillLbl && instructionChar[i] != '{' && instructionChar[i] != '}') {
 				fullLbl += instructionChar[i];
@@ -398,6 +471,10 @@ public class cosol {
 						System.out.println("|?");
 					}
 				}
+				// Implement Header file function
+				if (instructionChar[i] == '@') {
+					loadHeaderFile(strPop());
+				}
 				// Set Loop-Index
 				if (instructionChar[i] == ';') {
 					_LoopIndex = mathPop() - 1;
@@ -462,10 +539,10 @@ public class cosol {
 				}
 			}
 		}
-		//System.out.println(StrStck);
+		System.out.println(StrStck);
 		//System.out.println(MathStck);
 		//System.out.println(CtrlStck);
-		//System.out.println(_Labels);
+		System.out.println(_Labels);
 		//System.out.println(StckIndex);
 	}
 }
