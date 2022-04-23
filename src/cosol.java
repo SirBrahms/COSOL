@@ -66,7 +66,8 @@ public class cosol {
 			String fullStr = ""; // String for collecting Strings
 			boolean fillStr = false; // Boolean for marking when to collect Strings
 			boolean fillLbl = false; // Boolean for marking when to collect Labels
-			List<String> _InternalStrStck = new ArrayList<>();
+			String prefix = ""; // String for Prefixing the labels that are added
+			List<String> _InternalStrStck = new ArrayList<>(); // Internal Stack
 			char[] instructionChars = fullString.toCharArray(); // char Array for instructions
 			
 			for (int i = 0; i < instructionChars.length; i++) {
@@ -94,7 +95,7 @@ public class cosol {
 				else if (instructionChars[i] == '}' && fillLbl) {
 					fillLbl = false;
 					if (_NextLabelname != "") {
-						_Labels.put(_NextLabelname, fullLbl);
+						_Labels.put(prefix + "." + _NextLabelname, fullLbl);
 						fullLbl = "";
 						_NextLabelname = "";
 					}
@@ -107,9 +108,29 @@ public class cosol {
 				}
 				
 				if (!fillLbl && !fillStr) {
+					// Assign Name Function
 					if (instructionChars[i] == ':') {
-						_NextLabelname = _InternalStrStck.get(_InternalStrStck.size() - 1);
-						_InternalStrStck.remove(_InternalStrStck.size() - 1);
+						try {
+							_NextLabelname = _InternalStrStck.get(_InternalStrStck.size() - 1);
+							_InternalStrStck.remove(_InternalStrStck.size() - 1);
+						}
+						catch (Exception ex) {
+							System.out.println("'?'");
+							System.exit(0);
+							break;
+						}
+					}
+					// Assign Prefix Function
+					if (instructionChars[i] == '$') {
+						try {
+							prefix = _InternalStrStck.get(_InternalStrStck.size() - 1);
+							_InternalStrStck.remove(_InternalStrStck.size() - 1);
+						}
+						catch (Exception ex) {
+							System.out.println("$?");
+							System.exit(0);
+							break;
+						}
 					}
 				}
 			}
