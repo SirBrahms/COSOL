@@ -12,6 +12,7 @@ public class cosol {
 	public static Integer _LoopIndex = 0; // Integer for storing the Loop-Index of a given loop
 	public static Integer LastMathPop = 0; // Integer for storing the last value that was popped from the Math Stack
 	public static Integer StckIndex = 0; // Integer for marking which Stack should be addressed: 0 = strStck, 1 = mathStck
+	public static boolean _StdlibActive = false; // Boolean for marking when the standard library has been implemented
 	
 	public static void main(String[] args) {
 		if (args.length == 0) {
@@ -499,7 +500,15 @@ public class cosol {
 				}
 				// Implement Header file function
 				if (instructionChar[i] == '@') {
-					loadHeaderFile(strPop());
+					String headerFile = strPop();
+					
+					// Check if the HeaderFile is the standard library
+					if (headerFile.equals("stdlib")) {
+						_StdlibActive = true;
+					}
+					else {
+						loadHeaderFile(headerFile);
+					}
 				}
 				// Set Loop-Index
 				if (instructionChar[i] == ';') {
@@ -525,13 +534,19 @@ public class cosol {
 				}
 				// Jump to Label Function
 				if (instructionChar[i] == '^') {
+					String Label = strPop();
 					try {
-						interpret(_Labels.get(strPop()));
+						interpret(_Labels.get(Label));
 					}
 					catch (Exception ex) {
-						System.out.println("{?}");
-						System.exit(0);
-						break;
+						if (_StdlibActive) {
+							stdlib.tryCallLabel(Label);
+						}
+						else {
+							System.out.println("{?}");
+							System.exit(0);
+							break;
+						}
 					}
 				}
 				// Conditional Goto Function
