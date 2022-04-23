@@ -1,10 +1,11 @@
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.util.*;
 
+@SuppressWarnings("resource")
 // Standard Library for COSOL
 public class stdlib {
+	// Functions for matching the Label-Calls
 	public static void tryCallLabel(String labelname) {
 		switch (labelname) {
 			case "WriteFile":
@@ -68,6 +69,7 @@ public class stdlib {
 	
 	/* Threading Section
 	 * createThread() -> creates a new thread with the specified label
+	 * WIP!!
 	 */
 	
 	private static void startThread() {
