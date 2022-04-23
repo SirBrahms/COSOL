@@ -520,7 +520,7 @@ public class cosol {
 				}
 				// Conditional Jump to Label Function
 				if (instructionChar[i] == '\'') {
-					if (CtrlStck.get(CtrlStck.size() - 1) == 1) {
+					if (ctrlPop() == 1) {
 						try {
 							interpret(_Labels.get(strPop()));
 						}
@@ -583,7 +583,7 @@ public class cosol {
 		//System.out.println(StrStck);
 		//System.out.println(MathStck);
 		//System.out.println(CtrlStck);
-		//System.out.println(_Labels);
+		System.out.println(_Labels);
 		//System.out.println(StckIndex);
 	}
 }

@@ -16,6 +16,8 @@ public class stdlib {
 			case "DeleteFile":
 				deleteFile();
 				break;
+			case "RunThread":
+				startThread();
 			default:
 				System.out.println("{?}");
 				System.exit(0);
@@ -62,5 +64,15 @@ public class stdlib {
 			System.out.println("stdlib: fileDeletionFault");
 			System.exit(0);
 		}
+	}
+	
+	/* Threading Section
+	 * createThread() -> creates a new thread with the specified label
+	 */
+	
+	private static void startThread() {
+		new Thread(() -> {
+		    cosol.interpret(cosol._Labels.get(cosol.strPop()));
+		}).start();
 	}
 }
