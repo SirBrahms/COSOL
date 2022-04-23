@@ -133,6 +133,18 @@ public class cosol {
 							break;
 						}
 					}
+					// Implement Header file function (for recursive header file implementation)
+					if (instructionChars[i] == '@') {
+						String headerFile = strPop();
+						
+						// Check if the HeaderFile is the standard library
+						if (headerFile.equals("stdlib")) {
+							_StdlibActive = true;
+						}
+						else {
+							loadHeaderFile(headerFile);
+						}
+					}
 				}
 			}
 		}
