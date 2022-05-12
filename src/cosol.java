@@ -7,6 +7,7 @@ public class cosol {
 	public static List<String> StrStck = new ArrayList<>(); // List for Strings
 	public static List<Integer> MathStck = new ArrayList<>(); // List for Performing Math operations (integers)
 	public static List<Integer> CtrlStck = new ArrayList<>(); // List for implementing Control-Flow
+	public static List<String> ArgStck = new ArrayList<>(); // List for implementing the Passing of Arguments (String Only)
 	public static Hashtable<String, String> _Labels = new Hashtable<>(); // HashTable for storing Labels with their names
 	public static String _NextLabelname = ""; // String for storing the Name of the Next Label
 	public static Integer _LoopIndex = 0; // Integer for storing the Loop-Index of a given loop
@@ -95,7 +96,7 @@ public class cosol {
 				}
 				else if (instructionChars[i] == '}' && fillLbl) {
 					fillLbl = false;
-					if (_NextLabelname != "") {
+					if (_NextLabelname != "" && prefix != "") {
 						_Labels.put(prefix + "." + _NextLabelname, fullLbl);
 						fullLbl = "";
 						_NextLabelname = "";
@@ -133,7 +134,7 @@ public class cosol {
 							break;
 						}
 					}
-					// Implement Header file function (for recursive header file implementation)
+					/* Implement Header file function (for recursive header file implementation) (WIP)
 					if (instructionChars[i] == '@') {
 						String headerFile = strPop();
 						
@@ -145,6 +146,7 @@ public class cosol {
 							loadHeaderFile(headerFile);
 						}
 					}
+					*/
 				}
 			}
 		}
@@ -184,6 +186,19 @@ public class cosol {
 		return null;
 	}
 	
+	public static String argPop() {
+		try {
+			String str = StrStck.get(StrStck.size() - 1);
+			StrStck.remove(StrStck.size() - 1);
+			return str;
+		}
+		catch (Exception ex) {
+			System.out.println("'?'");
+			System.exit(0);
+		}
+		return null;
+	}
+	
 	
 	public static void interpret(String instruction) {
 		// defining Local Variables
@@ -192,6 +207,8 @@ public class cosol {
 		boolean fillStr = false; // Boolean for marking when to collect Strings
 		String fullMath = ""; // String for collecting Integers
 		boolean fillMath = false; // Boolean for marking when to collect Integers
+		String fullArg = ""; // String for collecting Arguments
+		boolean fillArg = false; // Boolean for marking when to collect arguments
 		String fullCond = ""; // String for collecting Conditional Expressions
 		boolean fillCond = false; // Boolean for marking when to collect Conditional Expressions
 		String fullLbl = ""; // String for Collecting Labels
@@ -238,6 +255,16 @@ public class cosol {
 					System.exit(0);
 					break;
 				}
+			}
+			// Argument Collection
+			if (fillArg && instructionChar[i] != '$') {
+				fullArg += instructionChar[i];
+			}
+			if (instructionChar[i] == '$' && !fillArg) {
+				fillArg = true;
+			}
+			else if (instructionChar[i] == '$' && fillArg) {
+				ArgStck.add(fullArg);
 			}
 			// Conditional Collection
 			if (fillCond && instructionChar[i] != '(' && instructionChar[i] != ')') {
@@ -300,7 +327,7 @@ public class cosol {
 			// Pops the first to Values of the MathStack, 
 			// Does the specified operation, e.g: SecondValue - FirstValue
 			// The Second Value popped is always the first value in the operation!
-			if (!fillStr && !fillMath && MathStck.size() >= 2 && !fillLbl) {
+			if (!fillStr && !fillMath && !fillArg && MathStck.size() >= 2 && !fillLbl) {
 				if (instructionChar[i] == '+') {
 					int y = mathPop();
 					int x = mathPop();
@@ -326,7 +353,7 @@ public class cosol {
 			
 			// Comparisons
 			// (for filling the Control Stack: Branching will be in the standard operations)
-			if (!fillStr && !fillMath && fillCond && !fillLbl) {
+			if (!fillStr && !fillMath && !fillArg && fillCond && !fillLbl) {
 				if (instructionChar[i] == '=') {
 					if (!strCond) {
 						int x = mathPop();
@@ -402,25 +429,22 @@ public class cosol {
 			
 			
 			// Standard Operations
-			if (!fillStr && !fillMath && !fillCond && !fillLbl) {
+			if (!fillStr && !fillMath && !fillArg && !fillCond && !fillLbl) {
 				// Print Function
 				if (instructionChar[i] == '.') {
 					System.out.println(strPop());
 				}
-				// Shift to String Function
+				// Shift to the Stack being pointed at by the Stack Index
 				if (instructionChar[i] == '<') {
-					StrStck.add(mathPop().toString());
-				}
-				// Shift to Control Function
-				if (instructionChar[i] == '¬') {
-					int num = mathPop();
-					if (num == 0 || num == 1) {
-						CtrlStck.add(num);
+					if (StckIndex == 0) {
+						StrStck.add(mathPop().toString());
 					}
-					else {
-						System.out.println("¬?");
-						System.exit(0);
-						break;
+					else if (StckIndex == 1) {}
+					else if (StckIndex == 2) {
+						ArgStck.add(strPop());
+					}
+					else if (StckIndex == 3) {
+						CtrlStck.add(mathPop());
 					}
 				}
 				// Try Shift to Math Function
@@ -467,12 +491,12 @@ public class cosol {
 				if (instructionChar[i] == '|') {
 					StckIndex = mathPop();
 				}
-				// Re-put the last thing popped
-				if (instructionChar[i] == '¦') {
-					MathStck.add(LastMathPop);
+				// Program Quit Function
+				if (instructionChar[i] == '\\') {
+					System.exit(mathPop());
 				}
-				// Duplicate Top Value on Stack (uses Stack index)
-				if (instructionChar[i] == '°') {
+				// Duplicate the top Value of the Stack referenced by the Stack index
+				if (instructionChar[i] == '/') {
 					if (StckIndex == 0) {
 						String duplicate = strPop();
 						StrStck.add(duplicate);
@@ -483,14 +507,20 @@ public class cosol {
 						MathStck.add(duplicate);
 						MathStck.add(duplicate);
 					}
+					else if (StckIndex == 2) {
+						String duplicate = argPop();
+						ArgStck.add(duplicate);
+						ArgStck.add(duplicate);
+					}
+					else if (StckIndex == 3) {
+						int duplicate = ctrlPop();
+						CtrlStck.add(duplicate);
+						CtrlStck.add(duplicate);
+					}
 					else {
 						System.out.println("|?");
 						System.exit(0);
 					}
-				}
-				// Program Quit Function
-				if (instructionChar[i] == '*') {
-					System.exit(mathPop());
 				}
 				// Swap Function: Swaps the last two values on the stack (uses stack index)
 				if (instructionChar[i] == '~') {
@@ -578,24 +608,13 @@ public class cosol {
 						continue;
 					}
 				}
-				// Goto Function
-				if (instructionChar[i] == '¨') {
-					try {
-						i = mathPop() - 1; // Reset the for Loop to the desired position -> since i would instantly increase, we subtract one right away, so we get the correct value.
-						continue;
-					}
-					catch (Exception ex) {
-						System.out.println("!?");
-						System.exit(0);
-						break;
-					}
-				}
 			}
 		}
 		//System.out.println(StrStck);
 		//System.out.println(MathStck);
 		//System.out.println(CtrlStck);
-		System.out.println(_Labels);
+		//System.out.println(ArgStck);
+		//System.out.println(_Labels);
 		//System.out.println(StckIndex);
 	}
 }

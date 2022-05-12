@@ -1,0 +1,49 @@
+/* Shift to Control Function
+				if (instructionChar[i] == '¬') {
+					int num = mathPop();
+					if (num == 0 || num == 1) {
+						CtrlStck.add(num);
+					}
+					else {
+						System.out.println("¬?");
+						System.exit(0);
+						break;
+					}
+				} */
+				
+
+// Re-put the last thing popped
+				if (instructionChar[i] == '¦') {
+					MathStck.add(LastMathPop);
+				}
+				
+// Duplicate Top Value on Stack (uses Stack index)
+				if (instructionChar[i] == '°') {
+					if (StckIndex == 0) {
+						String duplicate = strPop();
+						StrStck.add(duplicate);
+						StrStck.add(duplicate);
+					}
+					else if (StckIndex == 1) {
+						int duplicate = mathPop();
+						MathStck.add(duplicate);
+						MathStck.add(duplicate);
+					}
+					else {
+						System.out.println("|?");
+						System.exit(0);
+					}
+				}
+
+// Goto Function
+				if (instructionChar[i] == '¨') {
+					try {
+						i = mathPop() - 1; // Reset the for Loop to the desired position -> since i would instantly increase, we subtract one right away, so we get the correct value.
+						continue;
+					}
+					catch (Exception ex) {
+						System.out.println("!?");
+						System.exit(0);
+						break;
+					}
+				}
