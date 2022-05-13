@@ -502,8 +502,8 @@ public class cosol {
 				// Set next Label-Name
 				if (instructionChar[i] == ':') {
 					Data._NextLabelname = Data.strPop();
-					//Data._NextLabelname += ":" + Data.AssignPtr.toString();
-					//Data.AssignPtr += 1;
+					Data._ObjectPtrs.put(Data._NextLabelname, Data.AssignPtr);
+					Data.AssignPtr += 8;
 				}
 				// Conditional Jump to Label Function
 				if (instructionChar[i] == '\'') {
@@ -566,6 +566,7 @@ public class cosol {
 		//System.out.println(Data.CtrlStck);
 		//System.out.println(Data.ArgStck);
 		//System.out.println(Data._Labels);
+		//System.out.println(Data._ObjectPtrs);
 		//System.out.println(Data.StckIndex);
 	}
 }

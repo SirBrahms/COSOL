@@ -8,6 +8,7 @@ public class stdlib {
 	// Functions for matching the Label-Calls
 	public static void tryCallLabel(String labelname) {
 		switch (labelname) {
+			// File IO
 			case "WriteFile":
 				writeToFile();
 				break;
@@ -17,11 +18,19 @@ public class stdlib {
 			case "DeleteFile":
 				deleteFile();
 				break;
+			// Threading
 			case "RunThread":
 				startThread();
 				break;
+			// Pointers
 			case "pointerof":
 				pointerof();
+				break;
+			case "rptr":
+				callpointer();
+				break;
+			case "AssignPointer":
+				assignPointer();
 				break;
 			default:
 				System.out.println("{?}");
@@ -72,7 +81,7 @@ public class stdlib {
 	}
 	
 	/* Threading Section
-	 * createThread() -> creates a new thread with the specified label
+	 * - createThread() -> creates a new thread with the specified label
 	 * WIP!!
 	 */
 	
@@ -83,16 +92,60 @@ public class stdlib {
 	}
 	
 	/* Pointer Section
-	 * pointerof() -> gets the pointer of the top value on the String Stack and pushes it onto the Math Stack
+	 * - pointerof() -> gets the pointer of the top value on the String Stack and pushes it onto the Math Stack (Only String Arguments)
+	 * - callpointer() -> calls a label based on the top value on the Math Stack (Interpreted as a pointer)
+	 * - assignPointer() -> Assigns a pointer to any value that is on top of the Stack referenced by the Stack index (depends on Stack Index)
 	 */
 	
 	private static void pointerof() {
 		try {
-			String labelname = Data._Labels.get(Data.strPop());
-			labelname.split(":");
+			Integer ptr = Data._ObjectPtrs.get(Data.strPop());
+			Data.MathStck.add(ptr);
 		}
 		catch (Exception ex) {
 			System.out.println("{?}");
+			System.exit(0);
+		}
+	}
+	
+	private static void callpointer() {
+		try {
+			Integer val = Data.mathPop();
+			// Iterating trough the HashMap to find the right key that is being referenced
+			Data._ObjectPtrs.forEach((key, value) -> {
+			    if (value.equals(val)) {
+			        cosol.interpret(Data._Labels.get(key));
+			    }
+			});
+		}
+		catch (Exception ex) {
+			System.out.println("{?}");
+			System.exit(0);
+		}
+	}
+	
+	private static void assignPointer() {
+		switch (Data.StckIndex) {
+			case 0:
+				String val = Data.strPop();
+				Data._ObjectPtrs.put(val, Data.AssignPtr);
+				Data.AssignPtr++;
+				break;
+			case 1:
+				Integer num = Data.mathPop();
+				Data._ObjectPtrs.put(num.toString(), Data.AssignPtr);
+				Data.AssignPtr++;
+				break;
+			case 2:
+				String arg = Data.argPop();
+				Data._ObjectPtrs.put(arg.toString(), Data.AssignPtr);
+				Data.AssignPtr++;
+				break;
+			case 3:
+				Integer ctrl = Data.ctrlPop();
+				Data._ObjectPtrs.put(ctrl.toString(), Data.AssignPtr);
+				Data.AssignPtr++;
+				break;
 		}
 	}
 }
