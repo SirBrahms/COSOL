@@ -19,6 +19,10 @@ public class stdlib {
 				break;
 			case "RunThread":
 				startThread();
+				break;
+			case "pointerof":
+				pointerof();
+				break;
 			default:
 				System.out.println("{?}");
 				System.exit(0);
@@ -34,8 +38,8 @@ public class stdlib {
 	
 	private static void writeToFile() {
 		try {
-			FileWriter writer = new FileWriter(cosol.strPop());
-			writer.write(cosol.strPop());
+			FileWriter writer = new FileWriter(Data.strPop());
+			writer.write(Data.strPop());
 			writer.close();
 		}
 		catch (Exception ex) {
@@ -47,10 +51,10 @@ public class stdlib {
 	
 	private static void readFromFile() {
 		try {
-			File fileToRead = new File(cosol.strPop());
+			File fileToRead = new File(Data.strPop());
 			Scanner reader = new Scanner(fileToRead);
 			while (reader.hasNextLine()) {
-				cosol.StrStck.add(reader.nextLine());
+				Data.StrStck.add(reader.nextLine());
 			}
 		}
 		catch (Exception ex) {
@@ -60,7 +64,7 @@ public class stdlib {
 	}
 	
 	private static void deleteFile() {
-		File fileToDelete = new File(cosol.strPop());
+		File fileToDelete = new File(Data.strPop());
 		if (!fileToDelete.delete()) {
 			System.out.println("stdlib: fileDeletionFault");
 			System.exit(0);
@@ -74,7 +78,21 @@ public class stdlib {
 	
 	private static void startThread() {
 		new Thread(() -> {
-		    cosol.interpret(cosol._Labels.get(cosol.strPop()));
+		    cosol.interpret(Data._Labels.get(Data.strPop()));
 		}).start();
+	}
+	
+	/* Pointer Section
+	 * pointerof() -> gets the pointer of the top value on the String Stack and pushes it onto the Math Stack
+	 */
+	
+	private static void pointerof() {
+		try {
+			String labelname = Data._Labels.get(Data.strPop());
+			labelname.split(":");
+		}
+		catch (Exception ex) {
+			System.out.println("{?}");
+		}
 	}
 }
