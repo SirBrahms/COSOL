@@ -138,7 +138,7 @@ public class stdlib {
 				break;
 			case 2:
 				String arg = Data.argPop();
-				Data._ObjectPtrs.put(arg.toString(), Data.AssignPtr);
+				Data._ObjectPtrs.put(arg, Data.AssignPtr);
 				Data.AssignPtr++;
 				break;
 			case 3:

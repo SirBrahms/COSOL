@@ -559,9 +559,26 @@ public class cosol {
 						continue;
 					}
 				}
+				// Pointer reference function
+				if (instructionChar[i] == '&') {
+					try {
+						int address = Data.mathPop();
+						// Iterating trough the HashMap to find the right key that is being referenced
+						Data._ObjectPtrs.forEach((key, value) -> {
+						    if (value.equals(address)) {
+						    	Data.StrStck.add(key);
+						    }
+						});
+					}
+					catch (Exception ex) {
+						System.out.println("&?");
+						System.exit(0);
+						break;
+					}
+				}
 			}
 		}
-		//System.out.println(Data.StrStck);
+		System.out.println(Data.StrStck);
 		//System.out.println(Data.MathStck);
 		//System.out.println(Data.CtrlStck);
 		//System.out.println(Data.ArgStck);
