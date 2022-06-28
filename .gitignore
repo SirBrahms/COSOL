@@ -2,7 +2,7 @@
 /bin/*
 /version/*
 /src-cs/obj/*
-/src-cs/obj/*
+/src-cs/bin/*
 .classpath
 .project
 cosol.jardesc
