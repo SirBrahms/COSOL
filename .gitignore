@@ -1,6 +1,8 @@
 /.settings/*
 /bin/*
 /version/*
+/src-cs/obj/*
+/src-cs/obj/*
 .classpath
 .project
 cosol.jardesc
