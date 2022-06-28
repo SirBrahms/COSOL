@@ -1,6 +1,5 @@
 import java.util.*;
 import java.io.File;
-import java.io.FileNotFoundException;
 @SuppressWarnings("resource")
 
 public class cosol {
@@ -143,6 +142,7 @@ public class cosol {
 		
 	}
 	
+	@SuppressWarnings("unused")
 	public static void interpret(String instruction) {
 		// defining Local Variables
 		char[] instructionChar = instruction.toCharArray();
@@ -578,7 +578,7 @@ public class cosol {
 				}
 			}
 		}
-		System.out.println(Data.StrStck);
+		//System.out.println(Data.StrStck);
 		//System.out.println(Data.MathStck);
 		//System.out.println(Data.CtrlStck);
 		//System.out.println(Data.ArgStck);

@@ -1,0 +1,8 @@
+/.settings/*
+/bin/*
+/version/*
+.classpath
+.project
+cosol.jardesc
+Test
+/src/*.class

@@ -1,0 +1,5 @@
+__          $ Take two inputs
+>>          $ Move inputs to the Math Stack
++           $ Add inputs
+<           $ Move the result back onto the String Stack
+.           $ Print the Result

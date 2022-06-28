@@ -1,0 +1,13 @@
+"1":{
+    "1".    Print the String "1"
+    "1"^    Jump to the Label "1"
+    }
+
+"0":{
+    "0".    Print the String "0"
+    #0#\    Exit the Program
+    }
+_ >         Take user input and move it to the Math Stack 
+(#0# =)     Compare the user input to a Zero
+"0"'        If they are equal, goto the "0"-Label
+"1"^        If they are not, go to the "1"-Label
