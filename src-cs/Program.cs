@@ -52,8 +52,7 @@ namespace Cosol
                 if (_OnCall != null && Callable)
                     return _OnCall;
                 else if (!Callable)
-                    // TODO: Implement new Exception
-                    throw new Exception("Temp");
+                    throw new CallException("Action was not callable");
                 else
                     throw new NullReferenceException("No Action was set");
             }
