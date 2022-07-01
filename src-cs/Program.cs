@@ -5,7 +5,7 @@ namespace Cosol
     {
         static void Main(string[] args)
         {
-            Token abc = new Token(123);
+            Token abc = new Token(123, Test);
 
             Console.WriteLine(abc.Value);
             abc.OnCall();
@@ -75,6 +75,13 @@ namespace Cosol
             this.Value = Val;
             this.OnCall = OnCall;
             this.Callable = true;
+        }
+
+        public Token(object Val, Action OnCall, bool Callable)
+        {
+            this.Value = Val;
+            this.OnCall = OnCall;
+            this.Callable = Callable;
         }
     }
 
