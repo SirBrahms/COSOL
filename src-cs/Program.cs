@@ -5,7 +5,7 @@ namespace Cosol
     {
         static void Main(string[] args)
         {
-            Token abc = new Token(123, Test);
+            Token abc = new Token(123);
 
             Console.WriteLine(abc.Value);
             abc.OnCall();
@@ -24,7 +24,9 @@ namespace Cosol
     {
         protected object? _Value;
         protected Action? _OnCall;
-    
+        protected bool Callable; // Bool to determine wether this Token can be called
+
+        // Property for the Value
         public virtual object Value 
         {
             get
@@ -42,12 +44,16 @@ namespace Cosol
             }
         }
 
+        // Property for the Action
         public virtual Action OnCall
         {
             get
             {
-                if (_OnCall != null)
+                if (_OnCall != null && Callable)
                     return _OnCall;
+                else if (!Callable)
+                    // TODO: Implement new Exception
+                    throw new Exception("Temp");
                 else
                     throw new NullReferenceException("No Action was set");
             }
@@ -59,14 +65,19 @@ namespace Cosol
             }
         }
 
+        public Token(object Val)
+        {
+            this.Value = Val;
+            this.Callable = false;
+        }
+
         public Token(object Val, Action OnCall)
         {
             this.Value = Val;
             this.OnCall = OnCall;
+            this.Callable = true;
         }
     }
-
-    
 
     # endregion
 }
