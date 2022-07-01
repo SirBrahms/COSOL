@@ -3,6 +3,7 @@
 /version/*
 /src-cs/obj/*
 /src-cs/bin/*
+/src-cs/.vscode/*
 .classpath
 .project
 cosol.jardesc
