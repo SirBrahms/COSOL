@@ -3,18 +3,10 @@ namespace Cosol
 {
     class Program
     {
-        static void Main(string[] args)
+        static void Main(string[] Args)
         {
-            Token abc = new Token(123, Test);
-
-            Console.WriteLine(abc.Value);
-            abc.OnCall();
-        }
-
-        static void Test()
-        {
-            Console.WriteLine("Test");
-            return;
+            // Convert
+            Args[1].ToCharArray();
         }
     }
 
