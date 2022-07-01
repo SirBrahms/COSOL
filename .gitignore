@@ -1,6 +1,7 @@
 /.settings/*
 /bin/*
 /version/*
+/.vscode/*
 /src-cs/obj/*
 /src-cs/bin/*
 /src-cs/.vscode/*
