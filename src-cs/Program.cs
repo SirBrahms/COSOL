@@ -80,5 +80,16 @@ namespace Cosol
     }
 
     # endregion
+
+    # region Exceptions
+
+    class CallException : Exception
+    {
+        public CallException() {}
+        public CallException(string Message) : base(Message) {}
+        public CallException(string Message, Exception Inner) : base(Message, Inner) {}
+    }
+
+    # endregion
 }
 
