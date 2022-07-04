@@ -5,8 +5,17 @@ namespace Cosol
     {
         static void Main(string[] Args)
         {
-            // Convert
-            Args[1].ToCharArray();
+            if (Args.Length == 0)
+            {
+                // No Arguments supplied --> Run Console
+                Console.WriteLine("Ok");
+            }
+            else
+            {
+                // Open File and interpret
+                // Read File supplied in Args[0]
+                StreamReader Reader = new StreamReader(Args[0]);
+            }
         }
     }
 
@@ -16,7 +25,7 @@ namespace Cosol
     {
         protected object? _Value;
         protected Action? _OnCall;
-        protected bool Callable; // Bool to determine wether this Token can be called
+        public bool Callable = false; // Bool to determine wether this Token can be called
 
         // Property for the Value
         public virtual object Value 
@@ -73,6 +82,12 @@ namespace Cosol
         {
             this.Value = Val;
             this.OnCall = OnCall;
+            this.Callable = Callable;
+        }
+
+        public Token(object Val, bool Callable)
+        {
+            this.Value = Val;
             this.Callable = Callable;
         }
     }
