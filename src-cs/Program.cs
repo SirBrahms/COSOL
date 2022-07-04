@@ -8,15 +8,48 @@ namespace Cosol
             if (Args.Length == 0)
             {
                 // No Arguments supplied --> Run Console
-                Console.WriteLine("Ok");
+                while (true)
+                {
+                    string? Text = Console.ReadLine();
+
+                    if (!string.IsNullOrEmpty(Text))
+                        Interpret(Text);
+
+                }
             }
             else
             {
-                // Open File and interpret
                 // Read File supplied in Args[0]
+                string FullText = "";
+
                 StreamReader Reader = new StreamReader(Args[0]);
+                FullText = Reader.ReadToEnd();
+                Reader.Close();
+
+                Interpret(FullText);
             }
         }
+
+        static void Interpret(string Text)
+        {
+            char[] ConvertedText = Text.ToCharArray();
+            foreach (char itm in ConvertedText)
+            {
+                
+            }
+        }
+    }
+
+    class InstructionSet
+    {
+        // char[] -> Requirement
+        // Token -> Token to return
+        public Dictionary<char[], Token> Instructions = new Dictionary<char[], Token>()
+        {
+            {new char[] {'-', '>'}, new Token("->")},
+            {new char[] {'{'}, new Token("{")}, // Function definition start
+            {new char[] {'{'}, new Token("}")} // Function definition end
+        };
     }
 
     # region Tokens
