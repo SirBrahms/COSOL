@@ -1,10 +1,10 @@
-/.settings/*
-/bin/*
-/version/*
-/.vscode/*
-/src-cs/obj/*
-/src-cs/bin/*
-/src-cs/.vscode/*
+/.settings/
+/bin/
+/version/
+/.vscode/
+/src-cs/obj/
+/src-cs/bin/
+/src-cs/.vscode/
 .classpath
 .project
 cosol.jardesc
