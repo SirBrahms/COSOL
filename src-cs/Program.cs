@@ -46,7 +46,13 @@
 
         static void Interpret(string FullString)
         {
-            Console.WriteLine(FullString);
+            char[] Chars = FullString.ToCharArray();
+            BundleChars(Chars);
+        }
+
+        static string BundleChars(char[] Chars)
+        {
+            return "";
         }
     }
 }
